@@ -1,5 +1,7 @@
 // Сортировки по возрастанию
 
+import java.util.Arrays;
+
 public class Sort {
 
     public static void printArray(int[] array) {
@@ -9,21 +11,50 @@ public class Sort {
         System.out.println();
     }
 
-    public static void bubbleSort(int[] array) {
-        int[] items = array;
-        for (int i = 0; i < items.length - 1; i++) {
-            for (int j = i + 1; j < items.length; j++) {
-                if (items[i] > items[j]) {
-                    int temp = items[i];
-                    items[i] = items[j];
-                    items[j] = temp;
+    private static int minIndex(int[] array, int start) {
+        int minIndex = start;
+        int minValue = array[start];
+        for (int i = start + 1; i < array.length; i++) {
+            if (array[i] < minValue) {
+                minValue = array[i];
+                minIndex = i;
+            }
+        }
+        return minIndex;
+    }
+
+    private static int max(int[] array) {
+        int max = array[0];
+        for (int item : array) {
+            if (max < item) {
+                max = item;
+            }
+        }
+        return max;
+    }
+
+    public static void bubbleSort(int[] sourceArray) {
+        int[] array = sourceArray.clone();
+        long startTime = System.currentTimeMillis();
+
+        for (int i = 0; i < array.length - 1; i++) {
+            for (int j = i + 1; j < array.length; j++) {
+                if (array[i] > array[j]) {
+                    int temp = array[i];
+                    array[i] = array[j];
+                    array[j] = temp;
 //                    printArray(array);
                 }
             }
         }
+        long runtime = System.currentTimeMillis() - startTime;
+        System.out.println("  Пузырьковая: " + runtime + " мс.");
     }
 
-    public static void insertionSort(int[] array) {
+    public static void insertionSort(int[] sourceArray) {
+        int[] array = sourceArray.clone();
+        long startTime = System.currentTimeMillis();
+
         int m = 1;
         int k;
         int temp;
@@ -40,9 +71,14 @@ public class Sort {
             }
             m++;
         }
+        long runtime = System.currentTimeMillis() - startTime;
+        System.out.println("  Вставками: " + runtime + " мс.");
     }
 
-    public static void shellSort(int[] array) {
+    public static void shellSort(int[] sourceArray) {
+        int[] array = sourceArray.clone();
+        long startTime = System.currentTimeMillis();
+
         int currentItem;
         int index;
         int gap = array.length / 2;
@@ -61,9 +97,13 @@ public class Sort {
             }
             gap /= 2;
         }
+        long runtime = System.currentTimeMillis() - startTime;
+        System.out.println("  Шелла: " + runtime + " мс.");
     }
 
-    public static void quickSort(int[] array, int first, int last) {
+    public static void quickSort(int[] array, int first, int last, boolean showRuntime) {
+        long startTime = System.currentTimeMillis();
+
         if (first < last) {
             int lIndex = first;
             int rIndex = last - 1;
@@ -83,8 +123,49 @@ public class Sort {
                 }
             } while (lIndex < rIndex);
 
-            quickSort(array, first, rIndex + 1);
-            quickSort(array, lIndex, last);
+            quickSort(array, first, rIndex + 1, false);
+            quickSort(array, lIndex, last, false);
         }
+        long runtime = System.currentTimeMillis() - startTime;
+        if (showRuntime)
+            System.out.println("  Быстрая: " + runtime + " мс.");
+    }
+
+    public static void selectionSort(int[] sourceArray) {
+        int[] array = sourceArray.clone();
+        long startTime = System.currentTimeMillis();
+
+        for (int i = 0; i < array.length; i++) {
+            int index = minIndex(array, i);
+
+            int temp = array[i];
+            array[i] = array[index];
+            array[index] = temp;
+//            printArray(array);
+        }
+        long runtime = System.currentTimeMillis() - startTime;
+        System.out.println("  Выбором: " + runtime + " мс.");
+    }
+
+    public static void countingSort(int[] sourceArray) {
+        int[] array = sourceArray.clone();
+        long startTime = System.currentTimeMillis();
+
+        int[] count = new int[max(array) + 1];
+        for (int item : array) {
+            count[item]++;
+        }
+
+        int arrayIndex = 0;
+        for (int i = 0; i < count.length; i++) {
+            for (int j = 0; j < count[i]; j++) {
+                array[arrayIndex] = i;
+                arrayIndex++;
+//                printArray(array);
+            }
+        }
+        long runtime = System.currentTimeMillis() - startTime;
+        System.out.println("  Подсчетом: " + runtime + " мс.");
     }
 }
+

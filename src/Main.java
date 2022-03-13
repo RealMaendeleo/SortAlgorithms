@@ -1,3 +1,6 @@
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -14,51 +17,16 @@ public class Main {
         System.out.print("max = ");
         max = sc.nextInt();
 
-        int[] sourceArray = randomize(n, min, max);
+        int[] array = randomize(n, min, max);
 //        System.out.println("Ваш массив");
 //        for (int item : array) {
 //            System.out.print(item + " ");
 //        }
-        System.out.println('\n');
+//        System.out.println('\n');
 
-        showMenu();
-        long startTime, runtime;
+        choiceSort();
         int key = sc.nextInt();
-
-        while (key != 0) {
-            switch (key) {
-                case 1:
-                    startTime = System.currentTimeMillis();
-                    int[] array1 = sourceArray;
-                    Sort.bubbleSort(array1);
-                    runtime = System.currentTimeMillis() - startTime;
-                    System.out.println("Runtime: " + runtime + " мс.\n");
-                    break;
-                case 2:
-                    startTime = System.currentTimeMillis();
-                    int[] array2 = sourceArray;
-                    Sort.insertionSort(array2);
-                    runtime = System.currentTimeMillis() - startTime;
-                    System.out.println("Runtime: " + runtime + " мс.\n");
-                    break;
-                case 3:
-                    startTime = System.currentTimeMillis();
-                    int[] array3 = sourceArray;
-                    Sort.shellSort(array3);
-                    runtime = System.currentTimeMillis() - startTime;
-                    System.out.println("Runtime: " + runtime + " мс.\n");
-                    break;
-                case 4:
-                    startTime = System.currentTimeMillis();
-                    int[] array4 = sourceArray;
-                    Sort.quickSort(array4, 0, array4.length);
-                    runtime = System.currentTimeMillis() - startTime;
-                    System.out.println("Runtime: " + runtime + " мс.\n");
-                    break;
-            }
-            showMenu();
-            key = sc.nextInt();
-        }
+        showMenu(key, array);
     }
 
     static int[] randomize(int n, int start, int end) {
@@ -70,12 +38,65 @@ public class Main {
         return items;
     }
 
-    static void showMenu() {
-        System.out.println("Выберите сортировку");
-        System.out.println("  0. Выход");
-        System.out.println("  1. Пузырьковая");
-        System.out.println("  2. Вставками");
-        System.out.println("  3. Шелла");
-        System.out.println("  4. Быстрая");
+    static void choiceSort() {
+        System.out.println("Выберите сортировку:");
+        System.out.println("  0.Выход");
+        System.out.println("  1.Пузырьковая");
+        System.out.println("  2.Вставками");
+        System.out.println("  3.Шелла");
+        System.out.println("  4.Быстрая");
+        System.out.println("  5.Выбором");
+        System.out.println("  6.Подсчетом");
+        System.out.println("  7.Время работы каждой сортировки");
+    }
+
+    static void countSortsRuntime(int[] array) {
+        System.out.println("Runtime");
+
+        Sort.bubbleSort(array);
+
+        Sort.insertionSort(array);
+
+        Sort.shellSort(array);
+
+        int[] arr = array.clone();
+        Sort.quickSort(arr, 0, arr.length, true);
+
+        Sort.selectionSort(array);
+
+        Sort.countingSort(array);
+    }
+
+    static void showMenu(int key, int[] array) {
+        Scanner sc = new Scanner(System.in);
+
+        while (key != 0) {
+            switch (key) {
+                case 1:
+                    Sort.bubbleSort(array);
+                    break;
+                case 2:
+                    Sort.insertionSort(array);
+                    break;
+                case 3:
+                    Sort.shellSort(array);
+                    break;
+                case 4:
+                    int[] arr = array.clone();
+                    Sort.quickSort(arr, 0, arr.length, true);
+                    break;
+                case 5:
+                    Sort.selectionSort(array);
+                    break;
+                case 6:
+                    Sort.countingSort(array);
+                    break;
+                case 7:
+                    countSortsRuntime(array);
+                    break;
+            }
+            choiceSort();
+            key = sc.nextInt();
+        }
     }
 }
