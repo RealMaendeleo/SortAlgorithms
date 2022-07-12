@@ -1,5 +1,3 @@
-// Сортировки по возрастанию
-
 import java.util.Arrays;
 
 public class Sort {
@@ -37,6 +35,9 @@ public class Sort {
         int[] array = sourceArray.clone();
         long startTime = System.currentTimeMillis();
 
+//        printArray(array);
+//        System.out.println("Сортируем...");
+
         for (int i = 0; i < array.length - 1; i++) {
             for (int j = i + 1; j < array.length; j++) {
                 if (array[i] > array[j]) {
@@ -55,22 +56,21 @@ public class Sort {
         int[] array = sourceArray.clone();
         long startTime = System.currentTimeMillis();
 
-        int m = 1;
-        int k;
-        int temp;
-        while (m != array.length) {
-            k = m;
-            for (int i = m - 1; i >= 0; i--) {
-                if (array[i] > array[k]) {
-                    temp = array[i];
-                    array[i] = array[k];
-                    array[k] = temp;
-                    k--;
-                }
-//                printArray(array);
+        printArray(array);
+        System.out.println("Сортируем...");
+
+        int k, temp;
+        for (int i = 1; i < array.length; i++) {
+            k = i;
+            while (k > 0 && array[k-1] > array[k]) {
+                temp = array[k-1];
+                array[k-1] = array[k];
+                array[k] = temp;
+                k--;
+                printArray(array);
             }
-            m++;
         }
+
         long runtime = System.currentTimeMillis() - startTime;
         System.out.println("  Вставками: " + runtime + " мс.");
     }
@@ -78,6 +78,9 @@ public class Sort {
     public static void shellSort(int[] sourceArray) {
         int[] array = sourceArray.clone();
         long startTime = System.currentTimeMillis();
+
+//        printArray(array);
+//        System.out.println("Сортируем...");
 
         int currentItem;
         int index;
@@ -103,6 +106,9 @@ public class Sort {
 
     public static void quickSort(int[] array, int first, int last, boolean showRuntime) {
         long startTime = System.currentTimeMillis();
+
+//        printArray(array);
+//        System.out.println("Сортируем...");
 
         if (first < last) {
             int lIndex = first;
@@ -135,6 +141,9 @@ public class Sort {
         int[] array = sourceArray.clone();
         long startTime = System.currentTimeMillis();
 
+//        printArray(array);
+//        System.out.println("Сортируем...");
+
         for (int i = 0; i < array.length; i++) {
             int index = minIndex(array, i);
 
@@ -150,6 +159,9 @@ public class Sort {
     public static void countingSort(int[] sourceArray) {
         int[] array = sourceArray.clone();
         long startTime = System.currentTimeMillis();
+
+//        printArray(array);
+//        System.out.println("Сортируем...");
 
         int[] count = new int[max(array) + 1];
         for (int item : array) {
