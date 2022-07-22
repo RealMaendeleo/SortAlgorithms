@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Sort {
 
     private static int minIndex(int[] array, int start) {
@@ -134,6 +136,96 @@ public class Sort {
                 arrayIndex++;
 
                 if (showSortProcess) Main.printArray(array);
+            }
+        }
+    }
+
+    public static void mergeSort(int[] array, int n, boolean showSortProcess) {
+        if (n < 2) {
+            return;
+        }
+
+        int mid = n / 2;
+        int[] left = new int[mid];
+        int[] right = new int[n - mid];
+
+        System.arraycopy(array, 0, left, 0, mid);
+        System.arraycopy(array, mid, right, 0, n - mid);
+
+        mergeSort(left, mid, showSortProcess);
+        mergeSort(right, n - mid, showSortProcess);
+
+        merge(array, left, right, mid, n - mid, showSortProcess);
+    }
+
+    public static void merge(int[] array, int[] left, int[] right, int leftLen, int rightLen, boolean showSortProcess) {
+        int i = 0, j = 0, k = 0;
+        while (i < leftLen && j < rightLen) {
+            if (left[i] < right[j]) {
+                array[k++] = left[i++];
+            } else {
+                array[k++] = right[j++];
+            }
+        }
+        while (i < leftLen) {
+            array[k++] = left[i++];
+        }
+        while (j < rightLen) {
+            array[k++] = right[j++];
+        }
+        if (showSortProcess)  Main.printArray(array);
+    }
+
+    public static void cocktailSort(int[] sourceArray, boolean showSortProcess) {
+        int[] array = sourceArray.clone();
+        int temp;
+        int left = 0;
+        int right = array.length - 1;
+
+        do {
+            for (int i = left; i < right; i++) {
+                if (array[i] > array[i + 1]) {
+                    temp = array[i];
+                    array[i] = array[i + 1];
+                    array[i + 1] = temp;
+
+                    if (showSortProcess)  Main.printArray(array);
+                }
+            }
+            right--;
+            for (int i = right; i > left; i--) {
+                if (array[i - 1] > array[i]) {
+                    temp = array[i - 1];
+                    array[i - 1] = array[i];
+                    array[i] = temp;
+
+                    if (showSortProcess)  Main.printArray(array);
+                }
+            }
+            left++;
+
+        } while (left < right);
+    }
+
+    public static void combSort(int[] sourceArray, boolean showSortProcess) {
+        int[] array = sourceArray.clone();
+        int gap = array.length;
+        while (gap != 1) {
+
+            if (gap > 1) {
+                gap = gap * 10 / 13;
+            } else {
+                gap = 1;
+            }
+
+            for (int i = 0; i < array.length - gap; i++) {
+                if (array[i] > array[i + gap]) {
+                    int temp = array[i];
+                    array[i] = array[i + gap];
+                    array[i + gap] = temp;
+
+                    if (showSortProcess)  Main.printArray(array);
+                }
             }
         }
     }
