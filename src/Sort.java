@@ -1,13 +1,4 @@
-import java.util.Arrays;
-
 public class Sort {
-
-    public static void printArray(int[] array) {
-        for (int item : array) {
-            System.out.print(item + " ");
-        }
-        System.out.println();
-    }
 
     private static int minIndex(int[] array, int start) {
         int minIndex = start;
@@ -31,12 +22,8 @@ public class Sort {
         return max;
     }
 
-    public static void bubbleSort(int[] sourceArray) {
+    public static void bubbleSort(int[] sourceArray, boolean showSortProcess) {
         int[] array = sourceArray.clone();
-        long startTime = System.currentTimeMillis();
-
-//        printArray(array);
-//        System.out.println("Сортируем...");
 
         for (int i = 0; i < array.length - 1; i++) {
             for (int j = i + 1; j < array.length; j++) {
@@ -44,20 +31,15 @@ public class Sort {
                     int temp = array[i];
                     array[i] = array[j];
                     array[j] = temp;
-//                    printArray(array);
+
+                    if (showSortProcess)  Main.printArray(array);
                 }
             }
         }
-        long runtime = System.currentTimeMillis() - startTime;
-        System.out.println("  Пузырьковая: " + runtime + " мс.");
     }
 
-    public static void insertionSort(int[] sourceArray) {
+    public static void insertionSort(int[] sourceArray, boolean showSortProcess) {
         int[] array = sourceArray.clone();
-        long startTime = System.currentTimeMillis();
-
-        printArray(array);
-        System.out.println("Сортируем...");
 
         int k, temp;
         for (int i = 1; i < array.length; i++) {
@@ -67,20 +49,14 @@ public class Sort {
                 array[k-1] = array[k];
                 array[k] = temp;
                 k--;
-                printArray(array);
+
+                if (showSortProcess)  Main.printArray(array);
             }
         }
-
-        long runtime = System.currentTimeMillis() - startTime;
-        System.out.println("  Вставками: " + runtime + " мс.");
     }
 
-    public static void shellSort(int[] sourceArray) {
+    public static void shellSort(int[] sourceArray, boolean showSortProcess) {
         int[] array = sourceArray.clone();
-        long startTime = System.currentTimeMillis();
-
-//        printArray(array);
-//        System.out.println("Сортируем...");
 
         int currentItem;
         int index;
@@ -95,29 +71,23 @@ public class Sort {
                     index -= gap;
                     array[index] = currentItem;
 
-//                    printArray(array);
+                    if (showSortProcess)  Main.printArray(array);
                 }
             }
             gap /= 2;
         }
-        long runtime = System.currentTimeMillis() - startTime;
-        System.out.println("  Шелла: " + runtime + " мс.");
     }
 
-    public static void quickSort(int[] array, int first, int last, boolean showRuntime) {
-        long startTime = System.currentTimeMillis();
-
-//        printArray(array);
-//        System.out.println("Сортируем...");
+    public static void quickSort(int[] array, int first, int last, boolean showSortProcess) {
 
         if (first < last) {
             int lIndex = first;
             int rIndex = last - 1;
-            int middle = array[(lIndex + rIndex) / 2];
+            int pivot = array[(lIndex + rIndex) / 2];
             do {
-                while (array[lIndex] < middle)
+                while (array[lIndex] < pivot)
                     lIndex++;
-                while (middle < array[rIndex])
+                while (pivot < array[rIndex])
                     rIndex--;
                 if (lIndex <= rIndex) {
                     int temp = array[lIndex];
@@ -125,24 +95,18 @@ public class Sort {
                     array[rIndex] = temp;
                     lIndex++;
                     rIndex--;
-//                    printArray(array);
+
+                    if (showSortProcess) Main.printArray(array);
                 }
             } while (lIndex < rIndex);
 
-            quickSort(array, first, rIndex + 1, false);
-            quickSort(array, lIndex, last, false);
+            quickSort(array, first, rIndex + 1, showSortProcess);
+            quickSort(array, lIndex, last, showSortProcess);
         }
-        long runtime = System.currentTimeMillis() - startTime;
-        if (showRuntime)
-            System.out.println("  Быстрая: " + runtime + " мс.");
     }
 
-    public static void selectionSort(int[] sourceArray) {
+    public static void selectionSort(int[] sourceArray, boolean showSortProcess) {
         int[] array = sourceArray.clone();
-        long startTime = System.currentTimeMillis();
-
-//        printArray(array);
-//        System.out.println("Сортируем...");
 
         for (int i = 0; i < array.length; i++) {
             int index = minIndex(array, i);
@@ -150,18 +114,13 @@ public class Sort {
             int temp = array[i];
             array[i] = array[index];
             array[index] = temp;
-//            printArray(array);
+
+            if (showSortProcess) Main.printArray(array);
         }
-        long runtime = System.currentTimeMillis() - startTime;
-        System.out.println("  Выбором: " + runtime + " мс.");
     }
 
-    public static void countingSort(int[] sourceArray) {
+    public static void countingSort(int[] sourceArray, boolean showSortProcess) {
         int[] array = sourceArray.clone();
-        long startTime = System.currentTimeMillis();
-
-//        printArray(array);
-//        System.out.println("Сортируем...");
 
         int[] count = new int[max(array) + 1];
         for (int item : array) {
@@ -173,11 +132,10 @@ public class Sort {
             for (int j = 0; j < count[i]; j++) {
                 array[arrayIndex] = i;
                 arrayIndex++;
-//                printArray(array);
+
+                if (showSortProcess) Main.printArray(array);
             }
         }
-        long runtime = System.currentTimeMillis() - startTime;
-        System.out.println("  Подсчетом: " + runtime + " мс.");
     }
 }
 
